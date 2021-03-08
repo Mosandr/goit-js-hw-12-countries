@@ -47,6 +47,12 @@ body {
 .country__flag {
   max-width: 500px;
 }
-.coutries_item:hover {
+
+.country-link {
+  text-decoration: none;
+  color: black;
+}
+.country-link:hover,
+.country-link:focus {
   color: blueviolet;
 }

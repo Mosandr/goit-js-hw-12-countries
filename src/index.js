@@ -58,7 +58,9 @@ function onFetchError(e) {
 }
 
 function onCountryItemClick(e) {
-  if (e.target.nodeName != 'LI') return;
+  e.preventDefault();
+  if (e.target.nodeName != 'A') return;
+
   isCountryClicked = true;
   query = e.target.innerText;
   fetchCountries(query).then(onFetchSucces).catch(onFetchError);
