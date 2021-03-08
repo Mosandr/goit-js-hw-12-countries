@@ -15,7 +15,7 @@ const refs = {
   countryCard: document.querySelector('.country-card'),
 };
 
-refs.searchInput.addEventListener('input', debounce(onQueryInput, 300));
+refs.searchInput.addEventListener('input', debounce(onQueryInput, 500));
 
 function onQueryInput(event) {
   const query = event.target.value;
