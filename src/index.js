@@ -7,7 +7,8 @@ import coutriesListTemplate from './templates/countries-list.hbs';
 import coutryCardTemplate from './templates/country-card.hbs';
 
 const debounce = require('lodash.debounce');
-
+let query = '';
+let isCountryClicked = false;
 const refs = {
   searchForm: document.querySelector('.search_form'),
   searchInput: document.querySelector('.search__input'),
@@ -16,9 +17,10 @@ const refs = {
 };
 
 refs.searchInput.addEventListener('input', debounce(onQueryInput, 500));
+refs.countriesContainer.addEventListener('click', onCountryItemClick);
 
 function onQueryInput(event) {
-  const query = event.target.value;
+  query = event.target.value;
   fetchCountries(query).then(onFetchSucces).catch(onFetchError);
 }
 
@@ -35,6 +37,16 @@ function onFetchSucces(data) {
     return;
   }
 
+  if (
+    data.filter(item => item.name === query).length === 1 &&
+    isCountryClicked
+  ) {
+    const matchedCoutry = data.filter(item => item.name === query);
+    renderCountryCard(matchedCoutry[0]);
+    isCountryClicked = false;
+    return;
+  }
+
   renderCountries(countriesNames);
 }
 
@@ -43,6 +55,13 @@ function onFetchError(e) {
     text: 'Oops! No matches found',
     delay: 1000,
   });
+}
+
+function onCountryItemClick(e) {
+  if (e.target.nodeName != 'LI') return;
+  isCountryClicked = true;
+  query = e.target.innerText;
+  fetchCountries(query).then(onFetchSucces).catch(onFetchError);
 }
 
 function resetMarkup() {
